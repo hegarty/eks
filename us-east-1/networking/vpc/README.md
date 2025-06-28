@@ -29,17 +29,20 @@ The following subnets are defined in the adjacent `terragrunt.hcl` file:
 
 ## CIDR Allocation
 The CIDR blocks are allocated in the following contiguous manner within the VPC CIDR range:
-
+```
 Controller Subnets:
 10.0.24.0/28  (use1-az1)
 10.0.24.16/28 (use1-az2)
-
+```
+```
 Ingress-Egress Subnets:
 10.0.24.128/25 (use1-az2)
 10.0.25.0/25   (use1-az4)
 10.0.25.128/25 (use1-az1)
-
+```
+```
 Worker Subnets:
 10.0.26.0/23 (use1-az1)
 10.0.28.0/23 (use1-az2)
 10.0.30.0/23 (use1-az4)
+```

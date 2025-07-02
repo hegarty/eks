@@ -12,10 +12,10 @@ include "root" {
 }
 
 terraform {
-  source = format(include.root.locals.module_source, "networking/internet_gateway")
+  source = format(include.root.locals.module_source, "networking/nat_gateway")
 }
 
 inputs = {
-  name    = "eks-dev_internet-gateway"
-  vpc_id  = dependency.vpc.outputs.vpc_id
+  prefix    = "eks-dev-nat"
+  subnet_ids  = dependency.vpc.outputs.public_subnets
 }

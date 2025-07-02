@@ -3,7 +3,7 @@ locals {
 }
 
 dependency "vpc" {
-  config_path = "../vpc"
+  config_path = "../../vpc"
 }
 
 include "root" {
@@ -12,10 +12,10 @@ include "root" {
 }
 
 terraform {
-  source = format(include.root.locals.module_source, "networking/internet_gateway")
+  source = format(include.root.locals.module_source, "networking/routes")
 }
 
 inputs = {
-  name    = "eks-dev_internet-gateway"
-  vpc_id  = dependency.vpc.outputs.vpc_id
+  prefix    = "eks-dev-public"
+  subnet_ids  = dependency.vpc.outputs.public_subnets
 }

@@ -39,7 +39,17 @@ inputs = {
       }
     },
     {
-      availability_zone_id  = "use1-az2"
+      availability_zone_id  = "use1-az4"
+      cidr                  = "10.0.24.32/28"
+      tags                  = {
+        "kubernetes.io/cluster/eks-dev"   = "shared"
+        "kubernetes.io/role/internal-elb" = "1"
+        "use"                             = "controller"
+        "type"                            = "private"
+      }
+    },
+    {
+      availability_zone_id  = "use1-az1"
       cidr                  = "10.0.24.128/25"
       tags                  = {
         "kubernetes.io/cluster/eks-dev" = "shared"
@@ -49,7 +59,7 @@ inputs = {
       }
     },
     {
-      availability_zone_id  = "use1-az4"
+      availability_zone_id  = "use1-az2"
       cidr                  = "10.0.25.0/25"
       tags                  = {
         "kubernetes.io/cluster/eks-dev" = "shared"
@@ -59,7 +69,7 @@ inputs = {
       }
     },
     {
-      availability_zone_id  = "use1-az1"
+      availability_zone_id  = "use1-az4"
       cidr                  = "10.0.25.128/25"
       tags                  = {
         "kubernetes.io/cluster/eks-dev" = "shared"

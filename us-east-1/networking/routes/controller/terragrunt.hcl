@@ -6,12 +6,8 @@ dependency "vpc" {
   config_path = "../../vpc"
 }
 
-dependency "gateway" {
-  config_path = "../../internet_gateway"
-
-  mock_outputs = {
-      id = "mock-gateway-output"
-  }
+dependency "nat" {
+  config_path = "../../nat"
 }
 
 include "root" {
@@ -24,9 +20,9 @@ terraform {
 }
 
 inputs = {
-  route-table_prefix  = "eks-dev_public"
+  route-table_prefix  = "eks-dev_controller"
   vpc_id              = dependency.vpc.outputs.vpc_id
-  subnets             = dependency.vpc.outputs.public_subnets
+  subnets             = dependency.vpc.outputs.controller_subnets
   destination_cidr    = "0.0.0.0/0"
-  gateway_id          = dependency.gateway.outputs.id
+  nat_ids             = dependency.nat.outputs.ids
 }

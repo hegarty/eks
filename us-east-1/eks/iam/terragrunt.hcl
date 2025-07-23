@@ -13,9 +13,9 @@ terraform {
 }
 
 inputs = {
-  role_name= "bedrock"
-  policy_name= "bedrock_policy"
-  policy_description= "Grants permissions to interact with Amazon Bedrock services, including invoking foundation models and agents, if the principal (user or service) is authenticated"
+  role_name= "eks-dev_role"
+  policy_name= "eks-dev_policy"
+  policy_description= "Allows access to K8s API and for nodes to join the cluster"
 
   assume_role_policy = {
     "Version": "2012-10-17",
@@ -37,6 +37,13 @@ inputs = {
     ]
   }
 
+  aws_managed_policies = [
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  ]
+
+  /*
   policy = {
     "Version": "2012-10-17",
     "Statement": [
@@ -67,4 +74,5 @@ inputs = {
       "Resource": ["arn:aws:logs:*:*:*"]
     }]
   }
+  */
 }

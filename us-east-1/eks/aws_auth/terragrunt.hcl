@@ -16,9 +16,10 @@ terraform {
 }
 
 inputs = {
-  cluster_endpoint = dependency.cluster.outputs.endpoint
-  cluster_ca       = dependency.cluster.outputs.certificate_authority[0].data
-  token            = dependency.cluster.outputs.eks_token
+  cluster_name      = dependency.cluster.outputs.cluster_name
+  cluster_endpoint  = dependency.cluster.outputs.api-server-endpoint
+  cluster_ca        = dependency.cluster.outputs.certificate-authority[0]["data"]
+  #token             = dependency.cluster.outputs.eks_token
 
   map_roles = [
     {

@@ -1,13 +1,9 @@
-locals {
-
-}
-
 dependency "cluster" {
     config_path = "../cluster"
 }
 
 dependency "iam" {
-    config_path = "../iam"
+    config_path = "../iam/node_role"
 }
 
 dependency "vpc" {
@@ -29,35 +25,26 @@ terraform {
 
 inputs = {
   name    = "eks-dev"
-  instance_type = "m7g.large"
+  instance_types = ["c7g.large"]
+  ami_type = "AL2023_ARM_64_STANDARD"
+  capacity_type = "ON_DEMAND"
 
-  ami_most_recent = true
-  ami_owners      = ["amazon"]
-  ami_filters = [
-    {
-      name   = "owner-alias"
-      values = ["amazon"]
-    },
-    {
-      name   = "name"
-      values = ["amazon-eks-arm64-node-1.29-*"]
-    },
-    {
-      name   = "architecture"
-      values = ["arm64"]
-    },
-    {
-      name   = "virtualization-type"
-      values = ["hvm"]
-    },
-    {
-      name   = "root-device-type"
-      values = ["ebs"]
-    }
-  ]
+  block_device_mappings = [{
+      device_name = "/dev/xvda"
+      ebs = {
+        volume_size = 20
+        volume_type = "gp3"
+        encrypted   = true
+      }
+  }]
+
+  metadata_options = [{
+    http_tokens = "required"
+    http_put_response_hop_limit = 2
+  }]
 
   associate_public_ip_address = true
-  iam_arn         = dependency.iam.outputs.arn
+  node_role_arn         = dependency.iam.outputs.arn
   vpc_id          = dependency.vpc.outputs.vpc_id
   subnet_ids      = dependency.vpc.outputs.worker_subnets
   cluster_name    = dependency.cluster.outputs.cluster_name
@@ -71,6 +58,5 @@ inputs = {
   /etc/eks/bootstrap.sh ${dependency.cluster.outputs.cluster_name} \
   --b64-cluster-ca ${dependency.cluster.outputs.certificate-authority[0].data} \
   --apiserver-endpoint ${dependency.cluster.outputs.api-server-endpoint} \
-  --dns-cluster-ip ${dependency.vpc.outputs.vpc_cidr} \
   EOF
 }

@@ -9,13 +9,13 @@ include "root" {
 }
 
 dependency "oidc" {
-  config_path = "../pod_oidc"
+  config_path = "../../../pod_oidc"
 }
-
+/*
 dependency "cluster" {
   config_path = "../cluster"
 }
-
+*/
 terraform {
   source = format(include.root.locals.module_source, "iam")
 }
@@ -25,9 +25,9 @@ inputs = {
   policy_name         = "eks-dev-ccm-policy"
   policy_description  = "Permissions for AWS Cloud Controller Manager"
 
-  oidc_issuer       = dependency.oidc.outputs.oidc_provider_arn
+  #oidc_issuer       = dependency.oidc.outputs.oidc_provider_arn
   #oidc_provider_arn = dependency.oidc.outputs.oidc_provider_arn
-  cluster_name      = dependency.cluster.outputs.cluster_name
+  #cluster_name      = dependency.cluster.outputs.cluster_name
 
   assume_role_policy = {
     Version = "2012-10-17"
@@ -35,10 +35,13 @@ inputs = {
       Effect    = "Allow"
       Action    = "sts:AssumeRoleWithWebIdentity"
       Principal = { Federated = dependency.oidc.outputs.oidc_provider_arn }
-      Condition = {
-        StringEquals = {
-          "${dependency.oidc.outputs.oidc_issuer_host}:aud" = "sts.amazonaws.com"
-          "${dependency.oidc.outputs.oidc_issuer_host}:sub" = "system:serviceaccount:kube-system:aws-cloud-controller-manager"
+      "Condition": {
+        "StringEquals": {
+          "${dependency.oidc.outputs.oidc_url}:aud": "sts.amazonaws.com",
+          "${dependency.oidc.outputs.oidc_url}:sub": [
+            "system:serviceaccount:kube-system:cloud-controller-manager",
+            "system:serviceaccount:kube-system:aws-cloud-controller-manager"
+          ]
         }
       }
     }]
@@ -61,5 +64,4 @@ inputs = {
       Resource = ["*"]
     }]
   }
-
 }

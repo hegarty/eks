@@ -3,10 +3,6 @@ locals {
     egress  = file("egress.json")
 }
 
-dependency "iam" {
-    config_path = "../iam"
-}
-
 dependency "vpc" {
     config_path = "../../networking/vpc"
 }

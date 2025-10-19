@@ -44,6 +44,7 @@ inputs = {
     }]
   }
 
-  aws_managed_policies = ["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  aws_managed_policies = ["arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
 
 }

@@ -27,6 +27,17 @@ inputs = {
     }]
   }
 
+  policy = {
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = [
+        "ec2:DescribeAvailabilityZones"
+      ]
+      Resource = ["*"]
+    }]
+  }
+
   aws_managed_policies = [
     "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
     "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",

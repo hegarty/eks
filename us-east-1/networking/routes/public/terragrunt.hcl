@@ -8,10 +8,6 @@ dependency "vpc" {
 
 dependency "gateway" {
   config_path = "../../internet_gateway"
-
-  mock_outputs = {
-      id = "mock-gateway-output"
-  }
 }
 
 include "root" {

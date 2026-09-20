@@ -19,8 +19,11 @@ locals {
   account_id   = local.account_vars.locals.aws_account_id
   aws_region   = local.region_vars.locals.aws_region
 
-  remote_source = "git::ssh@github.com/hegarty"
-  module_source = get_env("MODULE_SOURCE") != null ? "${get_env("MODULE_SOURCE")}/%s" : "${local.remote_source}/%s"
+  # Fixed missing `.git` + git-subdirectory `//` separator — this only ever
+  # worked in practice because real usage sets $MODULE_SOURCE to a local
+  # checkout, bypassing the git URL entirely. See shop_docs/docs/terraform-versioning.md.
+  remote_source = "git::ssh://git@github.com/hegarty/terraform.git"
+  module_source = get_env("MODULE_SOURCE") != null ? "${get_env("MODULE_SOURCE")}/%s" : "${local.remote_source}//%s"
 }
 
 # Generate an AWS provider block
